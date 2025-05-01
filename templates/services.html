@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CarCare Hub - Services</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f7f7f7;
+      color: #333;
+    }
+    header {
+      background: #1e2a38;
+      padding: 20px;
+      text-align: center;
+      color: #fff;
+    }
+    header h1 {
+      margin: 0;
+    }
+    nav a {
+      color: #ccc;
+      margin: 0 15px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .hero {
+      background: url('https://images.unsplash.com/photo-1605027990123-9f49cfe0c5a3?auto=format&fit=crop&w=1470&q=80') no-repeat center center/cover;
+      height: 250px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 2rem;
+      font-weight: bold;
+      text-shadow: 2px 2px 5px #000;
+    }
+    .section {
+      padding: 40px 20px;
+      text-align: center;
+    }
+    .services {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 25px;
+    }
+    .service-card {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+      width: 280px;
+      overflow: hidden;
+      transition: transform 0.3s;
+    }
+    .service-card:hover {
+      transform: translateY(-10px);
+      box-shadow: 0 10px 20px rgba(0, 0, 0, 0.2);
+    }
+    .service-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+    .service-card h3 {
+      margin: 15px 0 5px;
+      color: #1e2a38;
+    }
+    .service-card p {
+      margin: 0 15px 15px;
+    }
+    .service-card button {
+      background: #1e2a38;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      margin: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .service-card button:hover {
+      background: #333;
+    }
+    footer {
+      background: #1e2a38;
+      color: #aaa;
+      text-align: center;
+      padding: 20px;
+      margin-top: 40px;
+    }
+    .modal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.7);
+      justify-content: center;
+      align-items: center;
+    }
+    .modal-content {
+      background: #fff;
+      padding: 20px;
+      border-radius: 10px;
+      width: 400px;
+    }
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .modal-header h3 {
+      margin: 0;
+    }
+    .modal-header button {
+      background: #f44336;
+      color: white;
+      border: none;
+      padding: 5px 10px;
+      cursor: pointer;
+    }
+    .modal-header button:hover {
+      background: #d32f2f;
+    }
+    .modal-body {
+      margin-top: 15px;
+    }
+    .modal-body input, .modal-body textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    @media (max-width: 768px) {
+      .services {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>CarCare Hub - Services</h1>
+    <nav id="navbar">
+        <a href="{{ url_for('home') }}">Home</a> <!-- Links to the Home page -->
+        <a href="{{ url_for('booking') }}">Booking</a> <!-- Links to the Booking page -->
+        <a href="{{ url_for('services') }}">Services</a> <!-- Links to the Services page -->
+        <a href="{{ url_for('repair') }}">Repairs</a> <!-- Links to the Repairs page -->
+        <a href="{{ url_for('maintenance') }}">Maintenance</a> <!-- Links to the Maintenance page -->
+        <a href="{{ url_for('contact') }}">Contact</a> <!-- Links to the Contact page -->
+        <a href="{{ url_for('about') }}">About</a> <!-- Links to the About page -->
+        <a href="{{ url_for('admin') }}">Admin</a> <!-- Links to the Admin page -->
+        <a href="{{ url_for('payment') }}">Payment</a> <!-- Links to the Payment page -->
+        <a href="{{ url_for('profile') }}">Profile</a> <!-- Links to the Profile page -->
+        <a href="{{ url_for('dashboard') }}">Dashboard</a> <!-- Links to the Dashboard page -->
+    </nav>
+    
+  </header>
+
+  <div class="hero">
+    Reliable Car Services at Your Doorstep
+  </div>
+
+  <section class="section">
+    <h2>What We Offer</h2>
+    <div class="services">
+      <div class="service-card">
+        <img src="{{ url_for('static', filename='images/bus1.png') }}" alt="Engine Service">
+        <h3>Engine Diagnostics</h3>
+        <p>Advanced diagnostics tools to ensure engine performance and fuel efficiency.</p>
+        <button onclick="openModal('Engine Diagnostics')">Request Service</button>
+      </div>
+      <div class="service-card">
+        <img src="{{ url_for('static', filename='images/bus2.png') }}" alt="Oil Change">
+        <h3>Oil Change</h3>
+        <p>Regular oil changes to keep your engine running smooth and extend its life.</p>
+        <button onclick="openModal('Oil Change')">Request Service</button>
+      </div>
+      <div class="service-card">
+        <img src="{{ url_for('static', filename='images/bus3.png') }}" alt="Car Wash">
+        <h3>Car Spa & Wash</h3>
+        <p>Interior and exterior detailing with eco-friendly cleaning products.</p>
+        <button onclick="openModal('Car Wash')">Request Service</button>
+      </div>
+      <div class="service-card">
+        <img src="{{ url_for('static', filename='images/bus4.png') }}" alt="Tyre Service">
+        <h3>Tyre Services</h3>
+        <p>Wheel alignment, tyre balancing and replacement with top brands.</p>
+        <button onclick="openModal('Tyre Services')">Request Service</button>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 CarCare Hub. All rights reserved.</p>
+    <p>Email: services@carcarehub.com | Call: +91-9876543210</p>
+  </footer>
+
+  <div class="modal" id="serviceModal">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h3>Request Service - <span id="serviceName"></span></h3>
+        <button onclick="closeModal()">X</button>
+      </div>
+      <div class="modal-body">
+        <input type="text" placeholder="Your Name" id="userName" required />
+        <input type="email" placeholder="Your Email" id="userEmail" required />
+        <textarea placeholder="Service Details" id="serviceDetails"></textarea>
+        <button onclick="submitServiceRequest()">Submit Request</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    function openModal(serviceName) {
+      document.getElementById('serviceName').textContent = serviceName;
+      document.getElementById('serviceModal').style.display = 'flex';
+    }
+
+    function closeModal() {
+      document.getElementById('serviceModal').style.display = 'none';
+    }
+
+    function submitServiceRequest() {
+      const name = document.getElementById('userName').value;
+      const email = document.getElementById('userEmail').value;
+      const details = document.getElementById('serviceDetails').value;
+
+      if (name && email && details) {
+        alert(`Thank you ${name}, your request for the service has been submitted.`);
+        closeModal();
+      } else {
+        alert('Please fill in all fields.');
+      }
+    }
+  </script>
+
+</body>
+</html>

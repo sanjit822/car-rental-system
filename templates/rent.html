@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CarCare Hub - Rent a Car</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f2f2f2;
+      color: #333;
+    }
+    header {
+      background: #1e2a38;
+      padding: 20px;
+      text-align: center;
+      color: #fff;
+    }
+    header h1 {
+      margin: 0;
+    }
+    nav a {
+      color: #ccc;
+      margin: 0 15px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .hero {
+      background: url('https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=1470&q=80') no-repeat center center/cover;
+      height: 300px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 2.2rem;
+      font-weight: bold;
+      text-shadow: 2px 2px 5px #000;
+    }
+    .section {
+      padding: 40px 20px;
+      text-align: center;
+    }
+    .cars {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 25px;
+    }
+    .car-card {
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+      width: 300px;
+      overflow: hidden;
+      transition: transform 0.3s;
+    }
+    .car-card:hover {
+      transform: translateY(-5px);
+    }
+    .car-card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+    .car-card h3 {
+      margin: 15px 0 5px;
+      color: #1e2a38;
+    }
+    .car-card p {
+      margin: 0 15px 10px;
+    }
+    .car-card button {
+      background: #1e2a38;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      margin: 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    footer {
+      background: #1e2a38;
+      color: #aaa;
+      text-align: center;
+      padding: 20px;
+      margin-top: 40px;
+    }
+    select, input[type="date"], input[type="number"] {
+      padding: 10px;
+      margin: 10px;
+      width: 200px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    .filter-section {
+      margin: 20px;
+      text-align: center;
+    }
+    .review-section {
+      margin-top: 40px;
+      text-align: center;
+    }
+    .review-section textarea {
+      width: 50%;
+      padding: 10px;
+      margin: 10px 0;
+      resize: vertical;
+    }
+    .review-section button {
+      background: #1e2a38;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+    }
+    .car-card img {
+      object-fit: cover;
+    }
+    @media (max-width: 768px) {
+      .cars {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>CarCare Hub - Rent a Car</h1>
+    <nav id="navbar">
+        <a href="{{ url_for('home') }}">Home</a> <!-- Links to the Home page -->
+        <a href="{{ url_for('booking') }}">Booking</a> <!-- Links to the Booking page -->
+        <a href="{{ url_for('services') }}">Services</a> <!-- Links to the Services page -->
+        <a href="{{ url_for('repair') }}">Repairs</a> <!-- Links to the Repairs page -->
+        <a href="{{ url_for('maintenance') }}">Maintenance</a> <!-- Links to the Maintenance page -->
+        <a href="{{ url_for('contact') }}">Contact</a> <!-- Links to the Contact page -->
+        <a href="{{ url_for('about') }}">About</a> <!-- Links to the About page -->
+        <a href="{{ url_for('admin') }}">Admin</a> <!-- Links to the Admin page -->
+        <a href="{{ url_for('payment') }}">Payment</a> <!-- Links to the Payment page -->
+        <a href="{{ url_for('profile') }}">Profile</a> <!-- Links to the Profile page -->
+        <a href="{{ url_for('dashboard') }}">Dashboard</a> <!-- Links to the Dashboard page -->
+    </nav>
+    
+  </header>
+
+  <div class="hero">
+    Choose Your Ride & Hit the Road
+  </div>
+
+  <!-- Filter Section -->
+  <section class="filter-section">
+    <h2>Filter Cars</h2>
+    <select id="car-type">
+      <option value="">Select Car Type</option>
+      <option value="SUV">SUV</option>
+      <option value="Sedan">Sedan</option>
+      <option value="Hatchback">Hatchback</option>
+      <option value="Luxury">Luxury</option>
+    </select>
+    <input type="date" id="rental-date">
+    <input type="number" id="days" placeholder="Number of Days">
+  </section>
+
+  <section class="section">
+    <h2>Available Cars</h2>
+    <div class="cars" id="car-list">
+      <div class="car-card" data-type="SUV">
+        <img src="{{ url_for('static', filename='images/sauv.png') }}" alt="Sedan">
+        <h3>SUV - Toyota Fortuner</h3>
+        <p>₹3500/day · AC · Diesel · 7 Seater</p>
+        <button onclick="rentCar('Toyota Fortuner')">Rent Now</button>
+      </div>
+      <div class="car-card" data-type="Sedan">
+        <img src="{{ url_for('static', filename='images/ven1.png') }}" alt="Sedan">
+        <h3>Sedan - Honda City</h3>
+        <p>₹2200/day · AC · Petrol · 5 Seater</p>
+        <button onclick="rentCar('Honda City')">Rent Now</button>
+      </div>
+      <div class="car-card" data-type="Hatchback">
+        <img src="{{ url_for('static', filename='images/ven3.png') }}" alt="Hatchback">
+        <h3>Hatchback - Maruti Swift</h3>
+        <p>₹1500/day · Petrol · Manual · 5 Seater</p>
+        <button onclick="rentCar('Maruti Swift')">Rent Now</button>
+      </div>
+      <div class="car-card" data-type="Luxury">
+        <img src="{{ url_for('static', filename='images/luxury.png') }}" alt="Hatchback">
+        <h3>Luxury - BMW X5</h3>
+        <p>₹8500/day · Automatic · Petrol · Premium</p>
+        <button onclick="rentCar('BMW X5')">Rent Now</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Review Section -->
+  <section class="review-section">
+    <h2>Leave a Review</h2>
+    <textarea id="review-text" placeholder="Write your review here..."></textarea>
+    <button onclick="submitReview()">Submit Review</button>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 CarCare Hub. All rights reserved.</p>
+    <p>Email: rent@carcarehub.com | Call: +91-9876543210</p>
+  </footer>
+
+  <script>
+    // Car Filter Logic
+    document.getElementById('car-type').addEventListener('change', function() {
+      const selectedType = this.value;
+      const cars = document.querySelectorAll('.car-card');
+      cars.forEach(car => {
+        if (selectedType && car.getAttribute('data-type') !== selectedType) {
+          car.style.display = 'none';
+        } else {
+          car.style.display = 'block';
+        }
+      });
+    });
+
+    // Rent Car Function
+    function rentCar(carName) {
+      alert(`You selected: ${carName}. Please contact us to confirm your booking.`);
+    }
+
+    // Review Submission
+    function submitReview() {
+      const reviewText = document.getElementById('review-text').value;
+      if (reviewText) {
+        alert(`Thank you for your review: "${reviewText}"`);
+        document.getElementById('review-text').value = ''; // Clear review textarea
+      } else {
+        alert('Please write a review before submitting.');
+      }
+    }
+  </script>
+</body>
+</html>

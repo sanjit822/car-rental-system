@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Payment - CarCare Hub</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      background-color: #f5f7fa;
+      color: #333;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    body.dark {
+      background-color: #1e1e2f;
+      color: #eee;
+    }
+
+    header {
+      background-color: #0b3d91;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    nav a {
+      color: white;
+      margin: 0 12px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .container {
+      padding: 40px;
+      max-width: 900px;
+      margin: auto;
+    }
+
+    h2 {
+      color: #0b3d91;
+    }
+
+    .payment-card {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      transition: background 0.3s;
+    }
+
+    body.dark .payment-card {
+      background: #2e2e3e;
+    }
+
+    .payment-methods {
+      display: flex;
+      gap: 20px;
+      margin-top: 30px;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+
+    .payment-method {
+      width: 48%;
+      padding: 15px;
+      border-radius: 8px;
+      background: #f0f0f0;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+      text-align: center;
+    }
+
+    .payment-method:hover {
+      background: #d8e2f0;
+      transform: scale(1.02);
+    }
+
+    .payment-form {
+      margin-top: 30px;
+    }
+
+    .payment-form input, .payment-form select {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    .btn {
+      background-color: #0b3d91;
+      color: white;
+      padding: 12px 24px;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 16px;
+      transition: background 0.3s;
+    }
+
+    .btn:hover {
+      background-color: #09307a;
+    }
+
+    #confirmation {
+      display: none;
+      margin-top: 20px;
+      padding: 20px;
+      background: #d4edda;
+      border-left: 5px solid #28a745;
+      border-radius: 6px;
+      color: #155724;
+      font-weight: bold;
+    }
+
+    footer {
+      background-color: #0b3d91;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      margin-top: 40px;
+    }
+
+    .toggle-mode {
+      position: absolute;
+      top: 25px;
+      right: 25px;
+      background: white;
+      color: #0b3d91;
+      padding: 8px 14px;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: bold;
+      transition: background 0.3s;
+    }
+
+    .toggle-mode:hover {
+      background: #e0e0e0;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>CarCare Hub - Payment</h1>
+    <nav id="navbar">
+        <a href="{{ url_for('home') }}">Home</a> <!-- Links to the Home page -->
+        <a href="{{ url_for('booking') }}">Booking</a> <!-- Links to the Booking page -->
+        <a href="{{ url_for('services') }}">Services</a> <!-- Links to the Services page -->
+        <a href="{{ url_for('repair') }}">Repairs</a> <!-- Links to the Repairs page -->
+        <a href="{{ url_for('maintenance') }}">Maintenance</a> <!-- Links to the Maintenance page -->
+        <a href="{{ url_for('contact') }}">Contact</a> <!-- Links to the Contact page -->
+        <a href="{{ url_for('about') }}">About</a> <!-- Links to the About page -->
+        <a href="{{ url_for('admin') }}">Admin</a> <!-- Links to the Admin page -->
+        <a href="{{ url_for('payment') }}">Payment</a> <!-- Links to the Payment page -->
+        <a href="{{ url_for('profile') }}">Profile</a> <!-- Links to the Profile page -->
+        <a href="{{ url_for('dashboard') }}">Dashboard</a> <!-- Links to the Dashboard page -->
+    </nav>
+    
+    <div class="toggle-mode" onclick="toggleMode()">Toggle Mode</div>
+  </header>
+
+  <div class="container">
+    <h2>Choose Payment Method</h2>
+    <div class="payment-card">
+      <p>You're about to make a payment for your service booking. Please choose a payment method:</p>
+      <div class="payment-methods">
+        <div class="payment-method" onclick="selectMethod('Card')">
+          <h3>Credit/Debit Card</h3>
+          <p>Pay securely with card details.</p>
+        </div>
+        <div class="payment-method" onclick="selectMethod('PayPal')">
+          <h3>PayPal</h3>
+          <p>Use your PayPal account to complete payment.</p>
+        </div>
+      </div>
+
+      <form class="payment-form" onsubmit="return makePayment(event)">
+        <label>Amount (INR)</label>
+        <input type="number" id="amount" required placeholder="Enter amount" />
+
+        <label>Card Number</label>
+        <input type="text" id="cardNumber" placeholder="1234 5678 9012 3456" required />
+
+        <label>Expiry Date</label>
+        <input type="text" id="expiry" placeholder="MM/YY" required />
+
+        <label>CVV</label>
+        <input type="password" id="cvv" placeholder="123" required />
+
+        <button type="submit" class="btn">Pay Now</button>
+      </form>
+
+      <div id="confirmation"></div>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 CarCare Hub. All rights reserved.</p>
+  </footer>
+
+  <script>
+    function selectMethod(method) {
+      alert(`You selected ${method} as your payment method.`);
+    }
+
+    function makePayment(event) {
+      event.preventDefault();
+
+      const amount = document.getElementById('amount').value;
+      const cardNumber = document.getElementById('cardNumber').value;
+      const expiry = document.getElementById('expiry').value;
+      const cvv = document.getElementById('cvv').value;
+
+      if (!cardNumber || !expiry || !cvv || !amount) {
+        alert('Please fill out all fields');
+        return false;
+      }
+
+      document.getElementById('confirmation').style.display = 'block';
+      document.getElementById('confirmation').innerText = `Payment of ₹${amount} successful! Thank you for using CarCare Hub.`;
+
+      // Reset form
+      event.target.reset();
+      return false;
+    }
+
+    function toggleMode() {
+      document.body.classList.toggle("dark");
+    }
+  </script>
+
+</body>
+</html>

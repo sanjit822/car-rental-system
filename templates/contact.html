@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CarCare Hub - Contact Us</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      background-color: #f9f9f9;
+      color: #333;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    body.dark-mode {
+      background-color: #121212;
+      color: #ddd;
+    }
+
+    header {
+      background-color: #1b263b;
+      color: white;
+      text-align: center;
+      padding: 20px;
+    }
+
+    nav a {
+      color: #ccc;
+      margin: 0 10px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .hero {
+      background: url('https://images.unsplash.com/photo-1581091870622-3d7c5b1cc441?auto=format&fit=crop&w=1470&q=80') no-repeat center center/cover;
+      height: 220px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 2.2rem;
+      text-shadow: 2px 2px 5px rgba(0,0,0,0.6);
+    }
+
+    .contact-section {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 40px;
+      padding: 40px 20px;
+    }
+
+    .contact-form, .contact-info {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+      width: 360px;
+    }
+
+    body.dark-mode .contact-form,
+    body.dark-mode .contact-info {
+      background: #1e1e1e;
+      box-shadow: 0 5px 15px rgba(255,255,255,0.05);
+    }
+
+    .contact-form h2, .contact-info h2 {
+      color: #1b263b;
+    }
+
+    body.dark-mode .contact-form h2, 
+    body.dark-mode .contact-info h2 {
+      color: #ddd;
+    }
+
+    .contact-form input, .contact-form textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      font-size: 1rem;
+    }
+
+    .contact-form textarea {
+      resize: vertical;
+    }
+
+    .contact-form button {
+      background: #1b263b;
+      color: white;
+      border: none;
+      padding: 10px 15px;
+      font-size: 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    .error {
+      color: red;
+      font-size: 0.85rem;
+      margin-bottom: 10px;
+    }
+
+    .char-count {
+      text-align: right;
+      font-size: 0.85rem;
+      color: #666;
+    }
+
+    .contact-info p {
+      margin: 10px 0;
+      font-size: 0.95rem;
+    }
+
+    .contact-info p a {
+      color: #1b263b;
+      text-decoration: none;
+    }
+
+    .map {
+      padding: 0 20px 30px;
+    }
+
+    iframe {
+      width: 100%;
+      border: none;
+      border-radius: 10px;
+      height: 250px;
+    }
+
+    .images-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+      gap: 15px;
+      padding: 30px 20px;
+    }
+
+    .images-grid img {
+      width: 100%;
+      border-radius: 8px;
+      height: 120px;
+      object-fit: cover;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    footer {
+      background-color: #1b263b;
+      color: #aaa;
+      text-align: center;
+      padding: 20px;
+      margin-top: 40px;
+    }
+
+    .dark-toggle {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: #fff;
+      color: #1b263b;
+      border: none;
+      padding: 8px 12px;
+      font-size: 0.9rem;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    body.dark-mode .dark-toggle {
+      background: #333;
+      color: #fff;
+    }
+
+    @media (max-width: 768px) {
+      .contact-section {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>CarCare Hub - Contact Us</h1>
+    <button class="dark-toggle" onclick="toggleDarkMode()">Toggle Dark Mode</button>
+    <nav id="navbar">
+        <a href="{{ url_for('home') }}">Home</a> <!-- Links to the Home page -->
+        <a href="{{ url_for('booking') }}">Booking</a> <!-- Links to the Booking page -->
+        <a href="{{ url_for('services') }}">Services</a> <!-- Links to the Services page -->
+        <a href="{{ url_for('repair') }}">Repairs</a> <!-- Links to the Repairs page -->
+        <a href="{{ url_for('maintenance') }}">Maintenance</a> <!-- Links to the Maintenance page -->
+        <a href="{{ url_for('contact') }}">Contact</a> <!-- Links to the Contact page -->
+        <a href="{{ url_for('about') }}">About</a> <!-- Links to the About page -->
+        <a href="{{ url_for('admin') }}">Admin</a> <!-- Links to the Admin page -->
+        <a href="{{ url_for('payment') }}">Payment</a> <!-- Links to the Payment page -->
+        <a href="{{ url_for('profile') }}">Profile</a> <!-- Links to the Profile page -->
+        <a href="{{ url_for('dashboard') }}">Dashboard</a> <!-- Links to the Dashboard page -->
+    </nav>
+    
+  </header>
+
+  <div class="hero">
+    Get In Touch With Us
+  </div>
+
+  <div class="contact-section">
+    <div class="contact-form">
+      <h2>Send Us a Message</h2>
+      <form id="contactForm">
+        <input type="text" id="name" placeholder="Your Name" required />
+        <input type="email" id="email" placeholder="Your Email" required />
+        <textarea id="message" rows="5" placeholder="Your Message" maxlength="500" required></textarea>
+        <div class="char-count" id="charCount">0/500 characters</div>
+        <div class="error" id="formError"></div>
+        <button type="submit">Send Message</button>
+      </form>
+    </div>
+    <div class="contact-info">
+      <h2>Contact Details</h2>
+      <p><strong>Email:</strong> <a href="mailto:support@carcarehub.com">support@carcarehub.com</a></p>
+      <p><strong>Phone:</strong> <a href="tel:+919876543210">+91-9876543210</a></p>
+      <p><strong>Location:</strong> Sector 21, New Delhi, India</p>
+      <p><strong>Working Hours:</strong> Mon - Sat, 9AM - 7PM</p>
+      <p><strong>Current Time:</strong> <span id="liveTime"></span></p>
+    </div>
+  </div>
+
+  <div class="map">
+    <iframe src="https://maps.google.com/maps?q=sector%2021%20new%20delhi&t=&z=13&ie=UTF8&iwloc=&output=embed"></iframe>
+  </div>
+
+  <section class="images-grid">
+    <img src="{{ url_for('static', filename='images/car23.png') }}" alt="Car Rental">
+    <img src="{{ url_for('static', filename='images/tools.png') }}" alt="Car Rental">
+    <img src="{{ url_for('static', filename='images/garage.png') }}" alt="Car Rental">
+    <img src="{{ url_for('static', filename='images/staff.png') }}" alt="Car Rental">
+  </section>
+
+  <footer>
+    <p>&copy; 2025 CarCare Hub. All rights reserved.</p>
+    <p>Email: support@carcarehub.com | Call: +91-9876543210</p>
+  </footer>
+
+  <script>
+    // Live Clock
+    function updateClock() {
+      const now = new Date();
+      document.getElementById('liveTime').textContent = now.toLocaleTimeString();
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // Character Count
+    const messageField = document.getElementById("message");
+    const charCount = document.getElementById("charCount");
+    messageField.addEventListener("input", function () {
+      charCount.textContent = `${messageField.value.length}/500 characters`;
+    });
+
+    // Form Validation
+    document.getElementById("contactForm").addEventListener("submit", function (e) {
+      e.preventDefault();
+      const name = document.getElementById("name").value.trim();
+      const email = document.getElementById("email").value.trim();
+      const message = messageField.value.trim();
+      const error = document.getElementById("formError");
+
+      if (!name || !email || !message) {
+        error.textContent = "Please fill out all fields.";
+        return;
+      }
+
+      if (!/\S+@\S+\.\S+/.test(email)) {
+        error.textContent = "Please enter a valid email address.";
+        return;
+      }
+
+      error.textContent = "";
+      alert("Thank you! Your message has been sent.");
+      this.reset();
+      charCount.textContent = "0/500 characters";
+    });
+
+    // Dark Mode Toggle
+    function toggleDarkMode() {
+      document.body.classList.toggle("dark-mode");
+    }
+  </script>
+
+</body>
+</html>

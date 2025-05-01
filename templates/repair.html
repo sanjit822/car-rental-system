@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CarCare Hub - Repairs</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: #f0f0f0;
+      color: #333;
+    }
+    header {
+      background: #102a43;
+      padding: 20px;
+      text-align: center;
+      color: white;
+    }
+    nav a {
+      color: #ccc;
+      margin: 0 15px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+    .hero {
+      background: url('https://images.unsplash.com/photo-1617815264750-cc4ec1574ee2?auto=format&fit=crop&w=1470&q=80') no-repeat center center/cover;
+      height: 250px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 2rem;
+      font-weight: bold;
+      text-shadow: 2px 2px 5px #000;
+    }
+    .section {
+      padding: 40px 20px;
+      text-align: center;
+    }
+    .repairs {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 25px;
+    }
+    .repair-card {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+      width: 280px;
+      overflow: hidden;
+      transition: transform 0.3s;
+    }
+    .repair-card:hover {
+      transform: translateY(-5px);
+    }
+    .repair-card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+    .repair-card h3 {
+      margin: 15px 0 5px;
+      color: #102a43;
+    }
+    .repair-card p {
+      margin: 0 15px 15px;
+    }
+    .book-service {
+      background-color: #102a43;
+      color: #fff;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      margin: 10px 0;
+    }
+    footer {
+      background: #102a43;
+      color: #aaa;
+      text-align: center;
+      padding: 20px;
+      margin-top: 40px;
+    }
+    .contact-btn {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background-color: #f36f6f;
+      color: white;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 30px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      cursor: pointer;
+    }
+    .contact-form {
+      display: none;
+      position: fixed;
+      bottom: 100px;
+      right: 20px;
+      background: #fff;
+      border: 1px solid #ccc;
+      padding: 15px;
+      border-radius: 10px;
+      box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    }
+    .contact-form input,
+    .contact-form textarea {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+    @media (max-width: 768px) {
+      .repairs {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>CarCare Hub - Repair Services</h1>
+    <nav id="navbar">
+        <a href="{{ url_for('home') }}">Home</a> <!-- Links to the Home page -->
+        <a href="{{ url_for('booking') }}">Booking</a> <!-- Links to the Booking page -->
+        <a href="{{ url_for('services') }}">Services</a> <!-- Links to the Services page -->
+        <a href="{{ url_for('repair') }}">Repairs</a> <!-- Links to the Repairs page -->
+        <a href="{{ url_for('maintenance') }}">Maintenance</a> <!-- Links to the Maintenance page -->
+        <a href="{{ url_for('contact') }}">Contact</a> <!-- Links to the Contact page -->
+        <a href="{{ url_for('about') }}">About</a> <!-- Links to the About page -->
+        <a href="{{ url_for('admin') }}">Admin</a> <!-- Links to the Admin page -->
+        <a href="{{ url_for('payment') }}">Payment</a> <!-- Links to the Payment page -->
+        <a href="{{ url_for('profile') }}">Profile</a> <!-- Links to the Profile page -->
+        <a href="{{ url_for('dashboard') }}">Dashboard</a> <!-- Links to the Dashboard page -->
+    </nav>
+    
+  </header>
+
+  <div class="hero">
+    Expert Car Repairs for Every Problem
+  </div>
+
+  <section class="section">
+    <h2>Our Repair Specialties</h2>
+    <div class="repairs">
+      <div class="repair-card">
+        <img src="{{ url_for('static', filename='images/repair1.png') }}" alt="Car Rental">
+        <h3>Brake Repair</h3>
+        <p>Reliable and safe brake repair services to keep your vehicle in control.</p>
+        <button class="book-service" onclick="bookService('Brake Repair')">Book Service</button>
+      </div>
+      <div class="repair-card">
+        <img src="{{ url_for('static', filename='images/repair2.png') }}" alt="Car Rental">
+        <h3>AC & Heating</h3>
+        <p>Fix air conditioning and heating systems for comfort all year round.</p>
+        <button class="book-service" onclick="bookService('AC & Heating')">Book Service</button>
+      </div>
+      <div class="repair-card">
+        <img src="{{ url_for('static', filename='images/repair3.png') }}" alt="Car Rental">
+        <h3>Transmission Repair</h3>
+        <p>Rebuilds, replacements and fluid checks for smooth gear shifting.</p>
+        <button class="book-service" onclick="bookService('Transmission Repair')">Book Service</button>
+      </div>
+      <div class="repair-card">
+        <img src="{{ url_for('static', filename='images/car3.png') }}" alt="Car Rental">
+        <h3>Battery & Starter</h3>
+        <p>Quick diagnosis and replacement of dead batteries and starter issues.</p>
+        <button class="book-service" onclick="bookService('Battery & Starter')">Book Service</button>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 CarCare Hub. All rights reserved.</p>
+    <p>Email: repairs@carcarehub.com | Call: +91-9876543210</p>
+  </footer>
+
+  <div class="contact-btn" onclick="toggleContactForm()">📞</div>
+
+  <div class="contact-form">
+    <h3>Contact Us</h3>
+    <input type="text" placeholder="Your Name" id="contact-name" required />
+    <input type="email" placeholder="Your Email" id="contact-email" required />
+    <textarea placeholder="Your Message" id="contact-message" required></textarea>
+    <button onclick="submitContactForm()">Submit</button>
+  </div>
+
+  <script>
+    // Scroll effect for smooth navigation
+    document.querySelectorAll('nav a').forEach(anchor => {
+      anchor.addEventListener('click', function(e) {
+        e.preventDefault();
+        document.querySelector(this.getAttribute('href')).scrollIntoView({
+          behavior: 'smooth'
+        });
+      });
+    });
+
+    // Function to handle booking service
+    function bookService(serviceName) {
+      alert('You have booked a ' + serviceName + ' service.');
+    }
+
+    // Toggle contact form visibility
+    function toggleContactForm() {
+      const contactForm = document.querySelector('.contact-form');
+      contactForm.style.display = (contactForm.style.display === 'block') ? 'none' : 'block';
+    }
+
+    // Submit contact form
+    function submitContactForm() {
+      const name = document.getElementById('contact-name').value;
+      const email = document.getElementById('contact-email').value;
+      const message = document.getElementById('contact-message').value;
+      if (name && email && message) {
+        alert('Thank you for contacting us! We will get back to you shortly.');
+        document.querySelector('.contact-form').style.display = 'none'; // Hide the form after submission
+      } else {
+        alert('Please fill in all fields.');
+      }
+    }
+
+    // Console log when the page is loaded
+    console.log("Repair page loaded.");
+  </script>
+
+</body>
+</html>

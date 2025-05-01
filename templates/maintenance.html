@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CarCare Hub - Maintenance</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f4f4f4;
+      color: #333;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    body.dark-mode {
+      background-color: #1e1e1e;
+      color: #f1f1f1;
+    }
+
+    header {
+      background: #1b263b;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    nav a {
+      color: #ccc;
+      margin: 0 12px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .dark-mode nav a {
+      color: #aaa;
+    }
+
+    .hero {
+      background: url('https://images.unsplash.com/photo-1608303588026-70a23d0586ef?auto=format&fit=crop&w=1470&q=80') no-repeat center center/cover;
+      height: 240px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 2.2rem;
+      text-shadow: 2px 2px 6px black;
+    }
+
+    .section {
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    .maintenance-cards {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 25px;
+    }
+
+    .card {
+      background: #fff;
+      width: 270px;
+      border-radius: 10px;
+      box-shadow: 0 5px 10px rgba(0,0,0,0.1);
+      overflow: hidden;
+      transition: transform 0.3s ease;
+    }
+
+    .dark-mode .card {
+      background: #2e2e2e;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .card img {
+      width: 100%;
+      height: 180px;
+      object-fit: cover;
+    }
+
+    .card h3 {
+      color: #1b263b;
+      margin-top: 15px;
+    }
+
+    .dark-mode .card h3 {
+      color: #99c1f1;
+    }
+
+    .card p {
+      padding: 0 15px 10px;
+      font-size: 0.95rem;
+    }
+
+    .card button {
+      margin: 10px 0 15px;
+      background: #1b263b;
+      color: white;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 20px;
+      cursor: pointer;
+    }
+
+    .card button:hover {
+      background: #415a77;
+    }
+
+    footer {
+      background: #1b263b;
+      color: #aaa;
+      text-align: center;
+      padding: 20px;
+      margin-top: 40px;
+    }
+
+    .filter-box {
+      margin: 20px auto;
+      max-width: 400px;
+    }
+
+    .filter-box input {
+      width: 100%;
+      padding: 10px;
+      border-radius: 25px;
+      border: 1px solid #ccc;
+    }
+
+    #scrollTopBtn {
+      position: fixed;
+      bottom: 30px;
+      right: 30px;
+      background: #1b263b;
+      color: white;
+      padding: 10px 15px;
+      border: none;
+      border-radius: 50%;
+      font-size: 16px;
+      cursor: pointer;
+      display: none;
+    }
+
+    #darkModeToggle {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #1b263b;
+      color: white;
+      border: none;
+      padding: 10px;
+      border-radius: 10px;
+      cursor: pointer;
+      font-size: 14px;
+      z-index: 1000;
+    }
+
+    @media (max-width: 768px) {
+      .maintenance-cards {
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+
+    /* Modal Styles */
+    #modal {
+      display: none;
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6);
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 400px;
+      text-align: center;
+    }
+
+    .modal-content button {
+      margin-top: 20px;
+      padding: 8px 20px;
+      background: #1b263b;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .dark-mode .modal-content {
+      background: #2c2c2c;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+  <button id="darkModeToggle">Toggle Dark Mode</button>
+
+  <header>
+    <h1>CarCare Hub - Maintenance</h1>
+    <nav id="navbar">
+        <a href="{{ url_for('home') }}">Home</a> <!-- Links to the Home page -->
+        <a href="{{ url_for('booking') }}">Booking</a> <!-- Links to the Booking page -->
+        <a href="{{ url_for('services') }}">Services</a> <!-- Links to the Services page -->
+        <a href="{{ url_for('repair') }}">Repairs</a> <!-- Links to the Repairs page -->
+        <a href="{{ url_for('maintenance') }}">Maintenance</a> <!-- Links to the Maintenance page -->
+        <a href="{{ url_for('contact') }}">Contact</a> <!-- Links to the Contact page -->
+        <a href="{{ url_for('about') }}">About</a> <!-- Links to the About page -->
+        <a href="{{ url_for('admin') }}">Admin</a> <!-- Links to the Admin page -->
+        <a href="{{ url_for('payment') }}">Payment</a> <!-- Links to the Payment page -->
+        <a href="{{ url_for('profile') }}">Profile</a> <!-- Links to the Profile page -->
+        <a href="{{ url_for('dashboard') }}">Dashboard</a> <!-- Links to the Dashboard page -->
+    </nav>
+    
+  </header>
+
+  <div class="hero">Keep Your Car Running Smooth</div>
+
+  <section class="section">
+    <h2>Maintenance Services We Offer</h2>
+
+    <div class="filter-box">
+      <input type="text" id="searchInput" placeholder="Search services like 'oil', 'battery'...">
+    </div>
+
+    <div class="maintenance-cards" id="cardsContainer">
+      <div class="card">
+        <img src="{{ url_for('static', filename='images/bus2.png') }}" alt="Oil Change">
+        <h3>Oil Change</h3>
+        <p>Routine oil changes to ensure a smooth, fuel-efficient engine.</p>
+        <button onclick="bookService('Oil Change')">Book Now</button>
+      </div>
+      <div class="card">
+        <img src="{{ url_for('static', filename='images/car21.png') }}" alt="Oil Change">
+        <h3>Tire Rotation</h3>
+        <p>Prevent uneven tire wear and extend tire life with regular rotations.</p>
+        <button onclick="bookService('Tire Rotation')">Book Now</button>
+      </div>
+      <div class="card">
+        <img src="{{ url_for('static', filename='images/car22.png') }}" alt="Oil Change">
+        <h3>Fluid Check</h3>
+        <p>Inspection and top-up of engine oil, coolant, brake and transmission fluids.</p>
+        <button onclick="bookService('Fluid Check')">Book Now</button>
+      </div>
+      <div class="card">
+        <img src="{{ url_for('static', filename='images/car23.png') }}" alt="Oil Change">
+        <h3>Battery Test</h3>
+        <p>Thorough battery health check to avoid sudden failures on the road.</p>
+        <button onclick="bookService('Battery Test')">Book Now</button>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 CarCare Hub. All rights reserved.</p>
+    <p>Email: maintenance@carcarehub.com | Call: +91-9876543210</p>
+  </footer>
+
+  <!-- Modal -->
+  <div id="modal">
+    <div class="modal-content">
+      <h3>Thank you!</h3>
+      <p id="modalText">Your booking has been confirmed.</p>
+      <button onclick="closeModal()">Close</button>
+    </div>
+  </div>
+
+  <button id="scrollTopBtn" onclick="scrollToTop()">↑</button>
+
+  <script>
+    // Live Search Filter
+    document.getElementById('searchInput').addEventListener('input', function() {
+      const value = this.value.toLowerCase();
+      const cards = document.querySelectorAll('.card');
+      cards.forEach(card => {
+        const title = card.querySelector('h3').innerText.toLowerCase();
+        card.style.display = title.includes(value) ? 'block' : 'none';
+      });
+    });
+
+    // Book Service Modal
+    function bookService(service) {
+      document.getElementById('modalText').innerText = `You have booked: ${service}`;
+      document.getElementById('modal').style.display = 'flex';
+    }
+
+    function closeModal() {
+      document.getElementById('modal').style.display = 'none';
+    }
+
+    // Scroll to Top
+    const scrollBtn = document.getElementById('scrollTopBtn');
+    window.onscroll = () => {
+      scrollBtn.style.display = (document.documentElement.scrollTop > 200) ? 'block' : 'none';
+    }
+
+    function scrollToTop() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Dark Mode Toggle
+    document.getElementById('darkModeToggle').addEventListener('click', () => {
+      document.body.classList.toggle('dark-mode');
+    });
+
+    console.log("Maintenance page with enhancements loaded.");
+  </script>
+
+</body>
+</html>

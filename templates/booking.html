@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Car Booking - CarCare Hub</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      background-color: #f0f2f5;
+      color: #333;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    body.dark {
+      background-color: #1e1e2f;
+      color: #ddd;
+    }
+
+    header {
+      background-color: #0b3d91;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    nav a {
+      color: #fff;
+      margin: 0 12px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .theme-toggle {
+      float: right;
+      margin-top: -40px;
+      margin-right: 20px;
+      background: #fff;
+      color: #0b3d91;
+      padding: 5px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .hero {
+      background: url('https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=1470&q=80') no-repeat center/cover;
+      height: 200px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 2rem;
+      text-shadow: 2px 2px 6px rgba(0,0,0,0.5);
+    }
+
+    .container {
+      max-width: 900px;
+      margin: 30px auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    body.dark .container {
+      background: #2c2c3e;
+    }
+
+    h2 {
+      color: #0b3d91;
+      margin-bottom: 20px;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    input, select {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border: 1px solid #aaa;
+      border-radius: 5px;
+    }
+
+    button {
+      background-color: #0b3d91;
+      color: white;
+      padding: 12px 25px;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #08357a;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 15px;
+      margin-top: 30px;
+    }
+
+    .gallery img {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+      border-radius: 8px;
+    }
+
+    .preview {
+      margin-top: 20px;
+      padding: 15px;
+      border: 1px dashed #ccc;
+      border-radius: 5px;
+      background-color: #f9f9f9;
+    }
+
+    .car-image-preview {
+      max-width: 100%;
+      height: 180px;
+      object-fit: cover;
+      border-radius: 10px;
+      margin-bottom: 15px;
+      display: none;
+    }
+
+    footer {
+      background-color: #0b3d91;
+      color: #ccc;
+      text-align: center;
+      padding: 20px;
+      margin-top: 40px;
+    }
+
+    @media(max-width: 600px) {
+      .hero {
+        font-size: 1.4rem;
+        padding: 0 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>CarCare Hub - Book Your Ride</h1>
+    <div class="theme-toggle" onclick="toggleTheme()">Toggle Theme</div>
+    <nav id="navbar">
+        <a href="{{ url_for('home') }}">Home</a> <!-- Links to the Home page -->
+        <a href="{{ url_for('booking') }}">Booking</a> <!-- Links to the Booking page -->
+        <a href="{{ url_for('services') }}">Services</a> <!-- Links to the Services page -->
+        <a href="{{ url_for('repair') }}">Repairs</a> <!-- Links to the Repairs page -->
+        <a href="{{ url_for('maintenance') }}">Maintenance</a> <!-- Links to the Maintenance page -->
+        <a href="{{ url_for('contact') }}">Contact</a> <!-- Links to the Contact page -->
+        <a href="{{ url_for('about') }}">About</a> <!-- Links to the About page -->
+        <a href="{{ url_for('admin') }}">Admin</a> <!-- Links to the Admin page -->
+        <a href="{{ url_for('payment') }}">Payment</a> <!-- Links to the Payment page -->
+        <a href="{{ url_for('profile') }}">Profile</a> <!-- Links to the Profile page -->
+        <a href="{{ url_for('dashboard') }}">Dashboard</a> <!-- Links to the Dashboard page -->
+    </nav>
+    
+  </header>
+
+  <div class="hero">Easy & Quick Car Booking</div>
+
+  <div class="container">
+    <h2>Book a Car</h2>
+    <form id="bookingForm">
+      <label for="name">Full Name</label>
+      <input type="text" id="name" required>
+
+      <label for="email">Email Address</label>
+      <input type="email" id="email" required>
+
+      <label for="phone">Phone Number</label>
+      <input type="tel" id="phone" pattern="[0-9]{10}" placeholder="10-digit number" required>
+
+      <label for="car">Select Car</label>
+      <select id="car" required onchange="updateCarImage()">
+        <option value="">-- Choose a Car --</option>
+        <option value="Sedan - Honda City">Sedan - Honda City</option>
+        <option value="SUV - Toyota Fortuner">SUV - Toyota Fortuner</option>
+        <option value="Hatchback - Maruti Swift">Hatchback - Maruti Swift</option>
+        <option value="Electric - Tata Nexon EV">Electric - Tata Nexon EV</option>
+      </select>
+
+      <img id="carImage" class="car-image-preview" src="" alt="Car Preview">
+
+      <label for="pickup">Pickup Date & Time</label>
+      <input type="datetime-local" id="pickup" required>
+
+      <label for="drop">Drop-off Date & Time</label>
+      <input type="datetime-local" id="drop" required>
+
+      <label for="payment">Payment Method</label>
+      <select id="payment" required>
+        <option value="">-- Choose Payment Method --</option>
+        <option>Credit Card</option>
+        <option>UPI</option>
+        <option>Cash on Delivery</option>
+        <option>Net Banking</option>
+      </select>
+
+      <button type="submit">Confirm Booking</button>
+    </form>
+
+    <div class="preview" id="summary"></div>
+
+    <div class="gallery">
+      <img src="{{ url_for('static', filename='images/ven1.png') }}" alt="Sedan">
+<img src="{{ url_for('static', filename='images/ven2.png') }}" alt="SUV">
+<img src="{{ url_for('static', filename='images/ven3.png') }}" alt="Hatchback">
+<img src="{{ url_for('static', filename='images/ven4.png') }}" alt="Electric Car">
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 CarCare Hub. All rights reserved.</p>
+    <p>Email: bookings@carcarehub.com | Phone: +91-9876543210</p>
+  </footer>
+
+  <script>
+    const carImageMap = {
+      "Sedan - Honda City": "https://images.unsplash.com/photo-1601933471667-4a2f4bdf1b8a?auto=format&fit=crop&w=800&q=80",
+      "SUV - Toyota Fortuner": "https://images.unsplash.com/photo-1570129477492-45c003edd2be?auto=format&fit=crop&w=800&q=80",
+      "Hatchback - Maruti Swift": "https://images.unsplash.com/photo-1592194996308-7b43878e84a6?auto=format&fit=crop&w=800&q=80",
+      "Electric - Tata Nexon EV": "https://images.unsplash.com/photo-1629909614069-fc8828cc4b1b?auto=format&fit=crop&w=800&q=80"
+    };
+
+    function updateCarImage() {
+      const car = document.getElementById('car').value;
+      const img = document.getElementById('carImage');
+      if (carImageMap[car]) {
+        img.src = carImageMap[car];
+        img.style.display = 'block';
+      } else {
+        img.style.display = 'none';
+      }
+    }
+
+    function toggleTheme() {
+      document.body.classList.toggle('dark');
+    }
+
+    document.getElementById('bookingForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      const name = document.getElementById('name').value;
+      const email = document.getElementById('email').value;
+      const phone = document.getElementById('phone').value;
+      const car = document.getElementById('car').value;
+      const pickup = document.getElementById('pickup').value;
+      const drop = document.getElementById('drop').value;
+      const payment = document.getElementById('payment').value;
+
+      const summary = `
+        <h3>Booking Summary</h3>
+        <p><strong>Name:</strong> ${name}</p>
+        <p><strong>Email:</strong> ${email}</p>
+        <p><strong>Phone:</strong> ${phone}</p>
+        <p><strong>Car Selected:</strong> ${car}</p>
+        <p><strong>Pickup:</strong> ${pickup}</p>
+        <p><strong>Drop-off:</strong> ${drop}</p>
+        <p><strong>Payment:</strong> ${payment}</p>
+      `;
+
+      document.getElementById('summary').innerHTML = summary;
+      alert("🎉 Booking Confirmed!\nCheck the summary below.");
+      this.reset();
+      document.getElementById('carImage').style.display = 'none';
+    });
+  </script>
+
+</body>
+</html>

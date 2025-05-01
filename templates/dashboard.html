@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Dashboard - CarCare Hub</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f5f7fa;
+      color: #333;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    header {
+      background-color: #0b3d91;
+      color: white;
+      padding: 20px;
+      text-align: center;
+      position: relative;
+    }
+
+    nav a {
+      color: #fff;
+      margin: 0 12px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .container {
+      padding: 30px;
+      max-width: 1200px;
+      margin: auto;
+    }
+
+    h2 {
+      color: #0b3d91;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 20px;
+      margin-top: 30px;
+    }
+
+    .card {
+      background: white;
+      padding: 20px;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      text-align: center;
+      position: relative;
+    }
+
+    .card img {
+      width: 100%;
+      height: 140px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-bottom: 15px;
+    }
+
+    .card h3 {
+      margin-bottom: 10px;
+      color: #0b3d91;
+    }
+
+    .card p {
+      font-size: 14px;
+      color: #555;
+    }
+
+    .card a {
+      display: inline-block;
+      margin-top: 10px;
+      color: #0b3d91;
+      font-weight: bold;
+      text-decoration: none;
+    }
+
+    .stats {
+      margin-top: 50px;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      justify-content: space-around;
+    }
+
+    .stat-box {
+      background: #fff;
+      padding: 20px;
+      flex: 1 1 200px;
+      text-align: center;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+    }
+
+    .stat-box h3 {
+      color: #0b3d91;
+      font-size: 28px;
+    }
+
+    .stat-box p {
+      margin: 5px 0;
+      color: #666;
+    }
+
+    .toggle-mode {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      background: #fff;
+      color: #0b3d91;
+      border: none;
+      padding: 8px 15px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .dark-mode {
+      background-color: #1e1e2f;
+      color: #eee;
+    }
+
+    .dark-mode .card,
+    .dark-mode .stat-box {
+      background-color: #2d2d3f;
+      color: #eee;
+    }
+
+    .dark-mode h2,
+    .dark-mode .card h3,
+    .dark-mode .stat-box h3 {
+      color: #61dafb;
+    }
+
+    .dark-mode nav a {
+      color: #fff;
+    }
+
+    footer {
+      background-color: #0b3d91;
+      color: #ccc;
+      text-align: center;
+      padding: 20px;
+      margin-top: 40px;
+    }
+
+    @media(max-width: 600px) {
+      .card img {
+        height: 100px;
+      }
+
+      .stat-box h3 {
+        font-size: 22px;
+      }
+    }
+
+    #greeting {
+      font-size: 18px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .popup {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      background: #0b3d91;
+      color: #fff;
+      padding: 15px 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+      display: none;
+      z-index: 1000;
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Welcome to CarCare Hub Dashboard</h1>
+    <button class="toggle-mode" onclick="toggleMode()">🌗 Toggle Mode</button>
+    <nav id="navbar">
+        <a href="{{ url_for('home') }}">Home</a> <!-- Links to the Home page -->
+        <a href="{{ url_for('booking') }}">Booking</a> <!-- Links to the Booking page -->
+        <a href="{{ url_for('services') }}">Services</a> <!-- Links to the Services page -->
+        <a href="{{ url_for('repair') }}">Repairs</a> <!-- Links to the Repairs page -->
+        <a href="{{ url_for('maintenance') }}">Maintenance</a> <!-- Links to the Maintenance page -->
+        <a href="{{ url_for('contact') }}">Contact</a> <!-- Links to the Contact page -->
+        <a href="{{ url_for('about') }}">About</a> <!-- Links to the About page -->
+        <a href="{{ url_for('admin') }}">Admin</a> <!-- Links to the Admin page -->
+        <a href="{{ url_for('payment') }}">Payment</a> <!-- Links to the Payment page -->
+        <a href="{{ url_for('profile') }}">Profile</a> <!-- Links to the Profile page -->
+        <a href="{{ url_for('dashboard') }}">Dashboard</a> <!-- Links to the Dashboard page -->
+    </nav>
+    
+  </header>
+
+  <div class="container">
+    <div id="greeting"></div>
+
+    <h2>Quick Access</h2>
+    <div class="cards">
+      <div class="card">
+        <img src="{{ url_for('static', filename='images/booking.png') }}" alt="Sedan">
+        <h3>My Bookings</h3>
+        <p>View and manage your upcoming and past car bookings easily.</p>
+        <a href="booking.html">View More →</a>
+      </div>
+      <div class="card">
+        <img src="{{ url_for('static', filename='images/service.png') }}" alt="Sedan">
+        <h3>Service History</h3>
+        <p>Check your completed and ongoing car services in one place.</p>
+        <a href="services.html">View More →</a>
+      </div>
+      <div class="card">
+        <img src="{{ url_for('static', filename='images/invoice.png') }}" alt="Sedan">
+        <h3>Invoices</h3>
+        <p>Download your service and rental invoices for easy tracking.</p>
+        <a href="#">Download →</a>
+      </div>
+      <div class="card">
+        <img src="{{ url_for('static', filename='images/truck.png') }}" alt="Sedan">
+        <h3>Support</h3>
+        <p>Need help? Chat with our support or raise a service ticket.</p>
+        <a href="contact.html">Contact Us →</a>
+      </div>
+    </div>
+
+    <h2 style="margin-top: 50px;">Your Stats</h2>
+    <div class="stats">
+      <div class="stat-box">
+        <h3 id="bookings">0</h3>
+        <p>Total Bookings</p>
+      </div>
+      <div class="stat-box">
+        <h3 id="services">0</h3>
+        <p>Completed Services</p>
+      </div>
+      <div class="stat-box">
+        <h3 id="spent">₹0</h3>
+        <p>Total Spent</p>
+      </div>
+      <div class="stat-box">
+        <h3 id="rentals">0</h3>
+        <p>Upcoming Rentals</p>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 CarCare Hub. All rights reserved.</p>
+    <p>Email: dashboard@carcarehub.com | Phone: +91-9876543210</p>
+  </footer>
+
+  <div class="popup" id="popup">Welcome back to your dashboard!</div>
+
+  <script>
+    // Mode toggle
+    function toggleMode() {
+      document.body.classList.toggle("dark-mode");
+    }
+
+    // Greeting based on time
+    const greeting = document.getElementById("greeting");
+    const hour = new Date().getHours();
+    if (hour < 12) greeting.innerText = "Good Morning! 🌞";
+    else if (hour < 18) greeting.innerText = "Good Afternoon! ☀️";
+    else greeting.innerText = "Good Evening! 🌙";
+
+    // Popup notification
+    const popup = document.getElementById("popup");
+    setTimeout(() => {
+      popup.style.display = "block";
+      setTimeout(() => popup.style.display = "none", 3000);
+    }, 1000);
+
+    // Stat animation
+    function animateCounter(id, target, prefix = "") {
+      let count = 0;
+      const step = Math.ceil(target / 50);
+      const el = document.getElementById(id);
+      const interval = setInterval(() => {
+        count += step;
+        if (count >= target) {
+          el.textContent = prefix + target;
+          clearInterval(interval);
+        } else {
+          el.textContent = prefix + count;
+        }
+      }, 30);
+    }
+
+    animateCounter("bookings", 5);
+    animateCounter("services", 3);
+    animateCounter("spent", 24000, "₹");
+    animateCounter("rentals", 2);
+  </script>
+
+</body>
+</html>

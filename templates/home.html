@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>CarCare Hub - Home</title>
+  <style>
+    :root {
+      --main-bg: #f4f4f4;
+      --main-color: #1e2a38;
+      --text-color: #333;
+    }
+
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      background: var(--main-bg);
+      color: var(--text-color);
+      transition: background 0.3s, color 0.3s;
+    }
+
+    header {
+      background: var(--main-color);
+      color: #fff;
+      padding: 20px 40px;
+      text-align: center;
+      position: relative;
+    }
+
+    header h1 {
+      margin: 0;
+      font-size: 2.5rem;
+    }
+
+    nav {
+      margin-top: 10px;
+    }
+
+    nav a {
+      margin: 0 10px;
+      color: #ddd;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .hero {
+      background: url('https://images.unsplash.com/photo-1617531653515-85f8b43fcf13?auto=format&fit=crop&w=1470&q=80') no-repeat center center/cover;
+      height: 400px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: white;
+      font-size: 2rem;
+      font-weight: bold;
+      text-shadow: 1px 1px 5px #000;
+      transition: background 2s ease-in-out;
+    }
+
+    .section {
+      padding: 40px 20px;
+      text-align: center;
+    }
+
+    .features {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 20px;
+    }
+
+    .card {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+      max-width: 300px;
+      overflow: hidden;
+    }
+
+    .card img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .card h3 {
+      margin: 10px;
+      color: var(--main-color);
+    }
+
+    button {
+      background: var(--main-color);
+      color: white;
+      padding: 12px 24px;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    footer {
+      background: var(--main-color);
+      color: #aaa;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .scroll-to-top {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      background: var(--main-color);
+      color: white;
+      padding: 10px 15px;
+      border-radius: 50%;
+      display: none;
+      cursor: pointer;
+    }
+
+    .mobile-menu {
+      display: none;
+      cursor: pointer;
+      font-size: 2rem;
+      position: absolute;
+      top: 20px;
+      right: 30px;
+    }
+
+    #contactModal {
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.5);
+      display: none;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .modal-content {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      width: 90%;
+      max-width: 500px;
+    }
+
+    .modal-content input,
+    .modal-content textarea {
+      width: 100%;
+      padding: 10px;
+      margin: 10px 0;
+    }
+
+    .close {
+      float: right;
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    .top-bar {
+      text-align: right;
+      font-size: 1rem;
+      margin-bottom: 10px;
+    }
+
+    .dark-mode {
+      --main-bg: #121212;
+      --text-color: #eee;
+    }
+
+    @media (max-width: 768px) {
+      .features {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      nav {
+        display: none;
+        flex-direction: column;
+        background: var(--main-color);
+        padding: 10px;
+      }
+
+      nav a {
+        padding: 10px;
+        display: block;
+      }
+
+      .mobile-menu {
+        display: block;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>CarCare Hub</h1>
+    <div class="top-bar">
+      <span id="timeDisplay"></span>
+      <button onclick="toggleDarkMode()">🌓</button>
+    </div>
+    <div class="mobile-menu" onclick="toggleMenu()">&#9776;</div>
+    <nav>
+      <a href="{{ url_for('home') }}">Home</a>
+      <a href="{{ url_for('booking') }}">Booking</a>
+      <a href="{{ url_for('services') }}">Services</a>
+      <a href="{{ url_for('repair') }}">Repairs</a>
+      <a href="{{ url_for('maintenance') }}">Maintenance</a>
+      <a href="{{ url_for('contact') }}">Contact</a>
+      <a href="{{ url_for('about') }}">About</a>
+      <a href="{{ url_for('admin') }}">Admin</a>
+      <a href="{{ url_for('payment') }}">Payment</a>
+      <a href="{{ url_for('profile') }}">Profile</a>
+      <a href="{{ url_for('dashboard') }}">Dashboard</a>
+      <a href="{{ url_for('rent') }}">Rent</a>
+    </nav>
+  </header>
+
+  <div class="hero" id="hero">
+    Your One-Stop Car Solution
+  </div>
+
+  <section class="section">
+    <h2>What We Offer</h2>
+    <div class="features">
+      <div class="card">
+        <img src="{{ url_for('static', filename='images/car1.png') }}" alt="Car Rental">
+        <h3>Car Rentals</h3>
+      </div>
+      <div class="card">
+        <img src="{{ url_for('static', filename='images/car2.png') }}" alt="Repair">
+        <h3>Repairs & Fixes</h3>
+      </div>
+      <div class="card">
+        <img src="{{ url_for('static', filename='images/car3.png') }}" alt="Maintenance">
+        <h3>Scheduled Maintenance</h3>
+      </div>
+      <div class="card">
+        <img src="{{ url_for('static', filename='images/car4.png') }}" alt="Car Services">
+        <h3>All Car Services</h3>
+      </div>
+    </div>
+  </section>
+
+  <section class="section cta">
+    <h2>Need Immediate Assistance?</h2>
+    <button onclick="openModal()">Contact Us</button>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 CarCare Hub. All rights reserved.</p>
+    <p>Location: City Center, Main Street | Call: +91-9876543210</p>
+  </footer>
+
+  <div class="scroll-to-top" onclick="scrollToTop()">↑</div>
+
+  <!-- Contact Modal -->
+  <div id="contactModal">
+    <div class="modal-content">
+      <span class="close" onclick="closeModal()">&times;</span>
+      <h2>Contact Us</h2>
+      <form onsubmit="event.preventDefault(); alert('Message sent!'); closeModal();">
+        <input type="text" placeholder="Name" required>
+        <input type="email" placeholder="Email" required>
+        <textarea placeholder="Your message" required></textarea>
+        <button type="submit">Send</button>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    // Hero Image Rotator
+    const heroImages = [
+      'https://images.unsplash.com/photo-1617531653515-85f8b43fcf13?auto=format&fit=crop&w=1470&q=80',
+      'https://images.unsplash.com/photo-1591013144817-2299f6b0b0fe?auto=format&fit=crop&w=1470&q=80',
+      'https://images.unsplash.com/photo-1616128478019-0c3ca71799f9?auto=format&fit=crop&w=1470&q=80'
+    ];
+    let currentImageIndex = 0;
+    function changeHeroImage() {
+      currentImageIndex = (currentImageIndex + 1) % heroImages.length;
+      document.getElementById('hero').style.backgroundImage = `url('${heroImages[currentImageIndex]}')`;
+    }
+    setInterval(changeHeroImage, 5000);
+
+    // Scroll to Top Button
+    window.onscroll = function() {
+      document.querySelector('.scroll-to-top').style.display =
+        window.scrollY > 300 ? 'block' : 'none';
+    };
+    function scrollToTop() {
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Mobile Menu
+    function toggleMenu() {
+      const nav = document.getElementById('navbar');
+      nav.style.display = nav.style.display === 'flex' ? 'none' : 'flex';
+    }
+
+    // Modal
+    function openModal() {
+      document.getElementById('contactModal').style.display = 'flex';
+    }
+    function closeModal() {
+      document.getElementById('contactModal').style.display = 'none';
+    }
+
+    // Time Display
+    function updateTime() {
+      const now = new Date();
+      document.getElementById('timeDisplay').textContent = now.toLocaleTimeString();
+    }
+    setInterval(updateTime, 1000);
+
+    // Dark Mode Toggle
+    function toggleDarkMode() {
+      document.body.classList.toggle('dark-mode');
+    }
+  </script>
+</body>
+</html>

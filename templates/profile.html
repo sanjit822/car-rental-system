@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>User Profile - CarCare Hub</title>
+  <style>
+    body {
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      background-color: #f5f7fa;
+      color: #333;
+    }
+
+    header {
+      background-color: #0b3d91;
+      color: white;
+      padding: 20px;
+      text-align: center;
+    }
+
+    nav a {
+      color: white;
+      margin: 0 12px;
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    .container {
+      padding: 40px;
+      max-width: 900px;
+      margin: auto;
+    }
+
+    h2 {
+      color: #0b3d91;
+    }
+
+    .profile-card {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      position: relative;
+    }
+
+    .profile-card img {
+      width: 120px;
+      height: 120px;
+      object-fit: cover;
+      border-radius: 50%;
+      cursor: pointer;
+      border: 2px solid #0b3d91;
+    }
+
+    .profile-card .details {
+      color: #555;
+      flex-grow: 1;
+    }
+
+    .profile-card h3 {
+      margin-bottom: 15px;
+      color: #0b3d91;
+    }
+
+    .edit-btn {
+      background-color: #0b3d91;
+      color: white;
+      padding: 8px 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .edit-btn:hover {
+      background-color: #092c6d;
+    }
+
+    .progress {
+      margin-top: 20px;
+      background: #e0e0e0;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .progress-bar {
+      height: 14px;
+      width: 75%;
+      background-color: #0b3d91;
+      transition: width 0.4s ease-in-out;
+    }
+
+    footer {
+      background-color: #0b3d91;
+      color: white;
+      text-align: center;
+      padding: 20px;
+      margin-top: 40px;
+    }
+
+    /* Modal Styles */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      overflow: auto;
+      background-color: rgba(0,0,0,0.6);
+    }
+
+    .modal-content {
+      background-color: white;
+      margin: 10% auto;
+      padding: 20px;
+      width: 90%;
+      max-width: 400px;
+      border-radius: 10px;
+      text-align: left;
+    }
+
+    .modal-content input {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+    }
+
+    .modal-content button {
+      background-color: #0b3d91;
+      color: white;
+      border: none;
+      padding: 10px;
+      width: 100%;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    @media (max-width: 600px) {
+      .profile-card {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .profile-card img {
+        width: 100px;
+        height: 100px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>CarCare Hub - User Profile</h1>
+    <nav id="navbar">
+        <a href="{{ url_for('home') }}">Home</a> <!-- Links to the Home page -->
+        <a href="{{ url_for('booking') }}">Booking</a> <!-- Links to the Booking page -->
+        <a href="{{ url_for('services') }}">Services</a> <!-- Links to the Services page -->
+        <a href="{{ url_for('repair') }}">Repairs</a> <!-- Links to the Repairs page -->
+        <a href="{{ url_for('maintenance') }}">Maintenance</a> <!-- Links to the Maintenance page -->
+        <a href="{{ url_for('contact') }}">Contact</a> <!-- Links to the Contact page -->
+        <a href="{{ url_for('about') }}">About</a> <!-- Links to the About page -->
+        <a href="{{ url_for('admin') }}">Admin</a> <!-- Links to the Admin page -->
+        <a href="{{ url_for('payment') }}">Payment</a> <!-- Links to the Payment page -->
+        <a href="{{ url_for('profile') }}">Profile</a> <!-- Links to the Profile page -->
+        <a href="{{ url_for('dashboard') }}">Dashboard</a> <!-- Links to the Dashboard page -->
+    </nav>
+    
+  </header>
+
+  <div class="container">
+    <h2 id="greeting">Your Profile</h2>
+    <div class="profile-card">
+      <img src="{{ url_for('static', filename='images/car23.png') }}" alt="Car Rental">
+      <div class="details">
+        <h3 id="name">John Doe</h3>
+        <p id="email">Email: johndoe@example.com</p>
+        <p id="phone">Phone: +91-9876543210</p>
+        <p id="location">Location: New York, USA</p>
+        <div class="progress"><div class="progress-bar" id="progressBar"></div></div>
+      </div>
+      <button class="edit-btn" onclick="openModal()">Edit</button>
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div id="editModal" class="modal">
+    <div class="modal-content">
+      <h3>Edit Profile</h3>
+      <input type="text" id="editName" placeholder="Full Name">
+      <input type="email" id="editEmail" placeholder="Email">
+      <input type="tel" id="editPhone" placeholder="Phone">
+      <input type="text" id="editLocation" placeholder="Location">
+      <button onclick="saveProfile()">Save</button>
+    </div>
+  </div>
+
+  <footer>
+    <p>&copy; 2025 CarCare Hub. All rights reserved.</p>
+  </footer>
+
+  <script>
+    const modal = document.getElementById("editModal");
+    const nameField = document.getElementById("name");
+    const emailField = document.getElementById("email");
+    const phoneField = document.getElementById("phone");
+    const locationField = document.getElementById("location");
+    const greeting = document.getElementById("greeting");
+
+    function openModal() {
+      modal.style.display = "block";
+      document.getElementById("editName").value = nameField.innerText;
+      document.getElementById("editEmail").value = emailField.innerText.replace("Email: ", "");
+      document.getElementById("editPhone").value = phoneField.innerText.replace("Phone: ", "");
+      document.getElementById("editLocation").value = locationField.innerText.replace("Location: ", "");
+    }
+
+    function saveProfile() {
+      nameField.innerText = document.getElementById("editName").value;
+      emailField.innerText = "Email: " + document.getElementById("editEmail").value;
+      phoneField.innerText = "Phone: " + document.getElementById("editPhone").value;
+      locationField.innerText = "Location: " + document.getElementById("editLocation").value;
+      modal.style.display = "none";
+      updateProgress();
+      localStorage.setItem("userProfile", JSON.stringify({
+        name: nameField.innerText,
+        email: emailField.innerText,
+        phone: phoneField.innerText,
+        location: locationField.innerText
+      }));
+    }
+
+    window.onclick = function(event) {
+      if (event.target == modal) {
+        modal.style.display = "none";
+      }
+    }
+
+    function updateProgress() {
+      let percent = 0;
+      if (nameField.innerText) percent += 25;
+      if (emailField.innerText.includes("@")) percent += 25;
+      if (phoneField.innerText.length > 9) percent += 25;
+      if (locationField.innerText.length > 3) percent += 25;
+      document.getElementById("progressBar").style.width = percent + "%";
+    }
+
+    function loadProfile() {
+      const data = JSON.parse(localStorage.getItem("userProfile"));
+      if (data) {
+        nameField.innerText = data.name;
+        emailField.innerText = data.email;
+        phoneField.innerText = data.phone;
+        locationField.innerText = data.location;
+      }
+      updateProgress();
+    }
+
+    function greetUser() {
+      const hours = new Date().getHours();
+      let greet = "Good Evening";
+      if (hours < 12) greet = "Good Morning";
+      else if (hours < 18) greet = "Good Afternoon";
+      greeting.innerText = `${greet}, ${nameField.innerText.split(" ")[0]}!`;
+    }
+
+    window.onload = () => {
+      loadProfile();
+      greetUser();
+    };
+  </script>
+
+</body>
+</html>
